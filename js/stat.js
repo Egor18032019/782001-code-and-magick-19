@@ -66,6 +66,7 @@ var getRandomColorSaturation = function (hue, lightness) {
 // синий цвет в hsl(240, 100%, 50%) поэтому вызываем фунцкцию с параметрами 240 и 50% а насыщеность будет радномная из фунцкции которая выше
 
 var createFontStyle = function (ctx, font, baseline, style) {
+  // значение ctx.font  равно параметру font из функциции createFontStyle
   ctx.font = font;
   ctx.textBaseline = baseline;
   ctx.fillStyle = style;
@@ -105,6 +106,9 @@ window.renderStatistics = function (ctx, players, times) {
     // ctx.fillStyle = "blue";
     // если тут задать цвет и сделать сортировку по времени то будет первого красить. сделать потом
 
+    // left ? 5 : 2; образец
+    ctx.fillStyle = (players[i] === 'Вы' ? 'rgba(0, 0, 255, 1)' : getRandomColorSaturation(240, 50));
+    // заливка текста равно (если игрок это вы (и это правда) - то вернёт синий цвет если ложь то вернет рандомную насыщеность)
     ctx.fillRect(currentX, currentY, BAR_WIDTH, rightBarHeight);
     // ctx.fillRect(координата по X, координата по Y, длина по х, длина по Y);
 
