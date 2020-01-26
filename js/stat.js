@@ -81,8 +81,7 @@ window.renderStatistics = function (ctx, players, times) {
   createFontStyle(ctx, '16px PT Mono', 'hanging', 'red');
   ctx.fillText('Ура вы победили!', CLOUD_WIDTH / 2, CLOUD_Y + FONT_GAP + GAP);
   ctx.fillText('Список результатов: ', CLOUD_WIDTH / 2, CLOUD_Y + FONT_GAP * 2 + GAP);
-
-  ctx.fillStyle = "blue"
+  ctx.fillStyle = 'blue';
   var maxTime = getMaxElement(times);
   // ищем максимальный элемент в массиве times
   for (var i = 0; i < players.length; i++) {
@@ -103,12 +102,12 @@ window.renderStatistics = function (ctx, players, times) {
     // getRandomColorSaturation(240, 50); не смог придумать как сделать чтобы Цвет колонки игрока Вы rgba(255, 0, 0, 1).
     // Цвет колонок других игроков — синий, а насыщенность задаётся случайным образом.
 
-    // ctx.fillStyle = "blue";
+    // ctx.fillStyle = 'blue';
     // если тут задать цвет и сделать сортировку по времени то будет первого красить. сделать потом
 
     // left ? 5 : 2; образец
     ctx.fillStyle = (players[i] === 'Вы' ? 'rgba(0, 0, 255, 1)' : getRandomColorSaturation(240, 50));
-    // заливка текста равно (если игрок это вы (и это правда) - то вернёт синий цвет если ложь то вернет рандомную насыщеность)
+    // заливка текста равно (если игрок это вы (и это правда) - то вернёт синий цвет если ложь то вернет рандомную насыщеность) писец какойто
     ctx.fillRect(currentX, currentY, BAR_WIDTH, rightBarHeight);
     // ctx.fillRect(координата по X, координата по Y, длина по х, длина по Y);
 
