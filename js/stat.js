@@ -1,15 +1,4 @@
-'use strict'
-// var MAGIK = {
-//   renderStatistics: function (ctx) {
-//     ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-//     ctx.fillRect = (110, 60, 500, 200);
-//     ctx.fillStyle = 'red';
-//     ctx.fillRect = (100, 50, 500, 200);
-//   }
-// };
-// // // - почеу подобная запись не работает ??? или я чтото неправильно делаю  ??
-// MAGIK.renderStatistics();
-
+'use strict';
 
 var CLOUD_WIDTH = 420;
 var CLOUD_HEIGHT = 270;
@@ -91,7 +80,7 @@ window.renderStatistics = function (ctx, players, times) {
     // правильная высота столбика  равна заданой максимальной высоты столбика умноженная на время участника и делёное на максимальное время
     var currentY = CLOUD_HEIGHT - GAP - FONT_GAP - rightBarHeight;
     // от максимальной высоты облака отнимаем GAP(разница) и высоту шрифта и  потом  для того что бы строилось снизу вверх отнимаем высоту столбика
-    var currentX = CLOUD_X + TEXT_WIDTH + TEXT_WIDTH*i + BAR_WIDTH*i;
+    var currentX = CLOUD_X + TEXT_WIDTH + TEXT_WIDTH * i + BAR_WIDTH * i;
     // к начальной координате прибавляем GAP(отступ слева для красоты) и длину текста*умноженную на i
     var currentTime = Math.floor(times[i]);
     // округлям время
@@ -108,7 +97,7 @@ window.renderStatistics = function (ctx, players, times) {
     // если тут задать цвет и сделать сортировку по времени то будет первого красить. сделать потом
 
     // left ? 5 : 2; образец
-    ctx.fillStyle = (players[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : getRandomColorSaturation(240, 50));
+    ctx.fillStyle = players[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : getRandomColorSaturation(240, 50);
     // заливка текста равно (если игрок это вы (и это правда) - то вернёт красный цвет если ложь то вернет синий с рандомной насыщеностью)
     ctx.fillRect(currentX, currentY, BAR_WIDTH, rightBarHeight);
     // ctx.fillRect(координата по X, координата по Y, длина по х, длина по Y);
