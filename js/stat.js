@@ -59,7 +59,6 @@ var getMaxElement = function (arr) {
 };
 // функция нахождения максимального элемента
 
-
 var getRandomInt = function (max) {
   return Math.floor(Math.random() * max);
 };
@@ -109,14 +108,13 @@ window.renderStatistics = function (ctx, players, times) {
 
     ctx.fillText(players[i], currentX, CLOUD_HEIGHT - GAP / 2 - FONT_GAP);
     // это пишем имена игроков
-
     // Цвет колонок других игроков — синий, а насыщенность задаётся случайным образом.
 
     // ctx.fillStyle = 'blue';
     // если тут задать цвет и сделать сортировку по времени то будет первого красить. сделать потом
 
     ctx.fillStyle = players[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : getRandomColorSaturation(240, 50);
-    // заливка текста равно (если игрок это вы (и это правда) - то вернёт красный цвет если ложь то вернет синий с рандомной насыщеностью)
+    // заливка текста равно (если игрок это вы (и это правда) - то вернёт красный цвет - если ложь то вернет синий с рандомной насыщеностью)
     ctx.fillRect(currentX, currentY, BAR_WIDTH, rightBarHeight);
     // ctx.fillRect(координата по X, координата по Y, длина по х, длина по Y);
   }
