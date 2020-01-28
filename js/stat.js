@@ -119,7 +119,5 @@ window.renderStatistics = function (ctx, players, times) {
     // заливка текста равно (если игрок это вы (и это правда) - то вернёт красный цвет если ложь то вернет синий с рандомной насыщеностью)
     ctx.fillRect(currentX, currentY, BAR_WIDTH, rightBarHeight);
     // ctx.fillRect(координата по X, координата по Y, длина по х, длина по Y);
-
-
   }
 };
