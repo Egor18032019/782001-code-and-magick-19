@@ -77,22 +77,26 @@ var getRandomColorSaturation = function (hue, lightness) {
 // синий цвет в hsl(240, 100%, 50%) поэтому вызываем фунцкцию с параметрами 240 и 50% а насыщеность будет радномная из фунцкции которая выше
 
 var createFontStyle = function (ctx, font, baseline, style) {
-  // значение ctx.font  равно параметру font из функциции createFontStyle
+  // значение ctx.font  равно параметру font из параметров функции
   ctx.font = font;
   ctx.textBaseline = baseline;
   ctx.fillStyle = style;
 };
-// переменная для текста
+/**
+ * createFontStyle - функция для стилизации текста
+ */
 
 window.renderStatistics = function (ctx, players, times) {
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, COLOR_CLOUD);
-
+  /**
+   * renderCloud  - рисуем  табло
+   */
 
   createFontStyle(ctx, '16px PT Mono', 'hanging', 'black');
   ctx.fillText('Ура вы победили!', CLOUD_WIDTH / 2, CLOUD_Y + FONT_GAP + GAP);
   ctx.fillText('Список результатов: ', CLOUD_WIDTH / 2, CLOUD_Y + FONT_GAP * 2 + GAP);
-  ctx.fillStyle = 'blue';
+  ctx.fillStyle = 'black';
   var maxTime = getMaxElement(times);
   // ищем максимальный элемент в массиве times
   for (var i = 0; i < players.length; i++) {
@@ -104,24 +108,20 @@ window.renderStatistics = function (ctx, players, times) {
     // к начальной координате прибавляем GAP(отступ слева для красоты) и длину текста*умноженную на i
     var currentTime = Math.floor(times[i]);
     // округлям время
+    ctx.fillStyle = 'black';
     ctx.fillText(currentTime, currentX, currentY - GAP / 2 - FONT_GAP);
     // время прохождения участника = по Х также как у имён ,  по Y  - берём координаты у прямоуголника отнимаем высоту шрифта и GAP*2(для красоты)
-
     ctx.fillText(players[i], currentX, CLOUD_HEIGHT - GAP / 2 - FONT_GAP);
     // это пишем имена игроков
-
-    // getRandomColorSaturation(240, 50); не смог придумать как сделать чтобы Цвет колонки игрока Вы rgba(255, 0, 0, 1).
-    // Цвет колонок других игроков — синий, а насыщенность задаётся случайным образом.
 
     // ctx.fillStyle = 'blue';
     // если тут задать цвет и сделать сортировку по времени то будет первого красить. сделать потом
 
-    // left ? 5 : 2; образец
+    // Цвет колонок других игроков — синий, а насыщенность задаётся случайным образом.
     ctx.fillStyle = players[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : getRandomColorSaturation(240, 50);
     // заливка текста равно (если игрок это вы (и это правда) - то вернёт красный цвет если ложь то вернет синий с рандомной насыщеностью)
     ctx.fillRect(currentX, currentY, BAR_WIDTH, rightBarHeight);
     // ctx.fillRect(координата по X, координата по Y, длина по х, длина по Y);
-
 
   }
 };
