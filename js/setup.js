@@ -13,32 +13,6 @@ if (userFooter) {
 
 // удаляем класс у списка - "Похожие персонажи"
 
-// Создаем массив с данными магов
-
-// массив с данными визардов
-
-var wizards = [{
-    name: 'Дамблдор',
-    coatColor: 'rgb(241, 43, 107)',
-    eyesColor: 'black'
-  },
-  {
-    name: 'Messer',
-    coatColor: ' rgb(101, 137, 100)',
-    eyesColor: 'red'
-  },
-  {
-    name: 'Волдеморт',
-    coatColor: 'rgb(241, 43, 107)',
-    eyesColor: 'black'
-  },
-  {
-    name: 'Messershmit',
-    coatColor: ' rgb(101, 137, 100)',
-    eyesColor: 'red'
-  }
-];
-
 // массивы со случайнымми данными
 var players = [
   'Иван',
@@ -84,29 +58,44 @@ var getRandomInt = function (max) {
 };
 // генерация случайного числа
 
-var getRandomName = function (players, family) {
-  /**
-   * функция генерации случайного ника  Имя  + Фамилия
-   */
-  var random = getRandomInt(players.length);
-  var randomName = players[random];
-  var randomF = getRandomInt(family.length);
-  var randomFamily = family[randomF];
-  var names = randomName + ' ' + randomFamily;
-  return names;
-};
-// функция генерации случайного цвета плаща
-var getRandomcoatColor = function (coatColor) {
-  var random = getRandomInt(coatColor.length);
-  var randomColor = coatColor[random];
-  return randomColor;
+/**
+ *  создаем функцию которая генерирует случайные элементы
+ */
+var getRandomElement = function (massiv, massiv2) {
+  var random = getRandomInt(massiv.length);
+  if (massiv2) {
+    var random2 = getRandomInt(massiv2.length);
+    var randomElement2 = massiv2[random2];
+  };
+  var randomElement = massiv[random];
+  return massiv2 ? randomElement + " " + randomElement2 : randomElement;
 }
-// функция генерации случайного цвета глаз
-var getRandomEyesColor = function ( eyesColor ) {
-  var random = getRandomInt(eyesColor.length);
-  var randomeYesColor = eyesColor[random];
-  return randomeYesColor;
-}
+
+// Создаем массив с данными магов
+
+// массив с данными визардов
+
+var wizards = [{
+    name: getRandomElement(players, family),
+    coatColor: getRandomElement(coatColor),
+    eyesColor: getRandomElement(eyesColor)
+  },
+  {
+    name: getRandomElement(players, family),
+    coatColor: getRandomElement(coatColor),
+    eyesColor: getRandomElement(eyesColor)
+  },
+  {
+    name: getRandomElement(players, family),
+    coatColor: getRandomElement(coatColor),
+    eyesColor: getRandomElement(eyesColor)
+  },
+  {
+    name: getRandomElement(players, family),
+    coatColor: getRandomElement(coatColor),
+    eyesColor: getRandomElement(eyesColor)
+  }
+];
 
 var similarListElement = document.querySelector('.setup-similar-list');
 // Находим список похожих персонажей - куда будем добавлять визардов
@@ -118,15 +107,15 @@ console.log(similarWizardTemplate);
 
 var renderWizard = function (wizard) {
   /**
-   * Обьявлем функциию renderWizard которая принимает массив  с даными wizard
+   * Обьявлем функциию renderWizard которая принимает массив  с даными wizard и отрисовывает их
    */
   var wizardElement = similarWizardTemplate.cloneNode(true);
   // обьявили переменую wizardElement и в нее циклом копируем шаблоны
-  wizardElement.querySelector('.setup-similar-label').textContent = getRandomName(players, family);
+  wizardElement.querySelector('.setup-similar-label').textContent = wizards[i].name;
   // подставляем случайные имена взятые из getRandomName
-  wizardElement.querySelector('.wizard-coat').style.fill = getRandomcoatColor(coatColor);
+  wizardElement.querySelector('.wizard-coat').style.fill = wizards[i].coatColor;
   // красим плащи
-  wizardElement.querySelector('.wizard-eyes').style.fill = getRandomEyesColor(eyesColor);
+  wizardElement.querySelector('.wizard-eyes').style.fill = wizards[i].ceyesColor;
   return wizardElement;
   // возвращем WizardElement где в шаблоне от similarWizardTemplate вставлены данные из массива -> имена*цыет плащей и т.п.
 };
