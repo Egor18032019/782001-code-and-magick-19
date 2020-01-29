@@ -46,11 +46,11 @@ var coatColor = [
 ];
 
 var eyesColor = [
-  "black",
-  "red",
-  "blue",
-  "yellow",
-  "green"
+  'black',
+  'red',
+  'blue',
+  'yellow',
+  'green'
 ];
 
 var getRandomInt = function (max) {
@@ -58,43 +58,47 @@ var getRandomInt = function (max) {
 };
 // генерация случайного числа
 
-/**
- *  создаем функцию которая генерирует случайные элементы
- */
+// -? Дима - как пользоваться JSDOC ??
+// /**
+//  * @return
+//  * @param {*} massiv dd
+//  * @param {*} massiv2 dd
+//  * @type
+//  */
 var getRandomElement = function (massiv, massiv2) {
   var random = getRandomInt(massiv.length);
   if (massiv2) {
     var random2 = getRandomInt(massiv2.length);
     var randomElement2 = massiv2[random2];
-  };
+  }
   var randomElement = massiv[random];
-  return massiv2 ? randomElement + " " + randomElement2 : randomElement;
-}
+  return massiv2 ? randomElement + ' ' + randomElement2 : randomElement;
+};
 
 // Создаем массив с данными магов
 
 // массив с данными визардов
 
 var wizards = [{
-    name: getRandomElement(players, family),
-    coatColor: getRandomElement(coatColor),
-    eyesColor: getRandomElement(eyesColor)
-  },
-  {
-    name: getRandomElement(players, family),
-    coatColor: getRandomElement(coatColor),
-    eyesColor: getRandomElement(eyesColor)
-  },
-  {
-    name: getRandomElement(players, family),
-    coatColor: getRandomElement(coatColor),
-    eyesColor: getRandomElement(eyesColor)
-  },
-  {
-    name: getRandomElement(players, family),
-    coatColor: getRandomElement(coatColor),
-    eyesColor: getRandomElement(eyesColor)
-  }
+  name: getRandomElement(players, family),
+  coatColor: getRandomElement(coatColor),
+  eyesColor: getRandomElement(eyesColor)
+},
+{
+  name: getRandomElement(players, family),
+  coatColor: getRandomElement(coatColor),
+  eyesColor: getRandomElement(eyesColor)
+},
+{
+  name: getRandomElement(players, family),
+  coatColor: getRandomElement(coatColor),
+  eyesColor: getRandomElement(eyesColor)
+},
+{
+  name: getRandomElement(players, family),
+  coatColor: getRandomElement(coatColor),
+  eyesColor: getRandomElement(eyesColor)
+}
 ];
 
 var similarListElement = document.querySelector('.setup-similar-list');
@@ -102,12 +106,11 @@ var similarListElement = document.querySelector('.setup-similar-list');
 
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 // находим template в котором храниться шаблоны визардов
-console.log(similarWizardTemplate);
-// - вопрос к Диме = на каком этапе можно опнять что надо писать функцию ?
 
-var renderWizard = function (wizard) {
+var renderWizard = function () {
+  // -?? Дима - почему когда я сюда встаялю wizards он пишет ошибку ?
   /**
-   * Обьявлем функциию renderWizard которая принимает массив  с даными wizard и отрисовывает их
+   * Обьявлем функциию renderWizard которая принимает массив  с даными wizards и отрисовывает их
    */
   var wizardElement = similarWizardTemplate.cloneNode(true);
   // обьявили переменую wizardElement и в нее циклом копируем шаблоны
