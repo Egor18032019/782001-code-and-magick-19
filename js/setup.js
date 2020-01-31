@@ -10,8 +10,14 @@ var userFooter = document.querySelector('.setup-similar');
 if (userFooter) {
   userFooter.classList.remove('hidden');
 }
-
 // удаляем класс у списка - "Похожие персонажи"
+
+var numberOfWizards = 4;
+// тут количество необходимых визардов
+var similarListElement = document.querySelector('.setup-similar-list');
+// Находим список похожих персонажей - куда будем добавлять визардов
+var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+// находим template в котором храниться шаблоны визардов
 
 // массивы со случайнымми данными
 var players = [
@@ -53,81 +59,59 @@ var eyesColor = [
   'green'
 ];
 
-var getRandomInt = function (max) {
-  return Math.floor(Math.random() * max);
+var getRandomInt = function (min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 // генерация случайного числа
 
-// -? Дима - как пользоваться JSDOC ??
-// /**
-//  * @return
-//  * @param {*} massiv dd
-//  * @param {*} massiv2 dd
-//  * @type
-//  */
-var getRandomElement = function (massiv, massiv2) {
-  var random = getRandomInt(massiv.length);
-  if (massiv2) {
-    var random2 = getRandomInt(massiv2.length);
-    var randomElement2 = massiv2[random2];
-  }
-  var randomElement = massiv[random];
-  return massiv2 ? randomElement + ' ' + randomElement2 : randomElement;
+
+// это фУнкция получает массив и на выходе даёт случайный элемент массива
+var arrRandom = function (arrAny) {
+  var randomAny = getRandomInt(0, arrAny.length - 1);
+  return arrAny[randomAny];
 };
 
-// Создаем массив с данными магов
+// цикл для создание массива с обьекатми
+var getwizardMany = function (numberOfWizard) {
+  var wizardMany = [];
+  for (var i = 0; i < numberOfWizard; i++) {
+    wizardMany[i] = {
+      name: arrRandom(players) + ' ' + arrRandom(family),
+      coatColor: arrRandom(coatColor),
+      eyesColor: arrRandom(eyesColor)
+    };
+  }
+  return wizardMany;
+};
 
-// массив с данными визардов
+var wizardArr = getwizardMany(numberOfWizards);
 
-var wizards = [{
-  name: getRandomElement(players, family),
-  coatColor: getRandomElement(coatColor),
-  eyesColor: getRandomElement(eyesColor)
-},
-{
-  name: getRandomElement(players, family),
-  coatColor: getRandomElement(coatColor),
-  eyesColor: getRandomElement(eyesColor)
-},
-{
-  name: getRandomElement(players, family),
-  coatColor: getRandomElement(coatColor),
-  eyesColor: getRandomElement(eyesColor)
-},
-{
-  name: getRandomElement(players, family),
-  coatColor: getRandomElement(coatColor),
-  eyesColor: getRandomElement(eyesColor)
-}
-];
-
-var similarListElement = document.querySelector('.setup-similar-list');
-// Находим список похожих персонажей - куда будем добавлять визардов
-
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-// находим template в котором храниться шаблоны визардов
-
-var renderWizard = function () {
-  // -?? Дима - почему когда я сюда встаялю wizards он пишет ошибку ?
+var renderWizard = function (arrWizardsElement) {
   /**
    * Обьявлем функциию renderWizard которая принимает массив  с даными wizards и отрисовывает их
    */
-  var wizardElement = similarWizardTemplate.cloneNode(true);
-  // обьявили переменую wizardElement и в нее циклом копируем шаблоны
-  wizardElement.querySelector('.setup-similar-label').textContent = wizards[i].name;
+  if (similarWizardTemplate) {
+    var wizardElement = similarWizardTemplate.cloneNode(true);
+    // обьявили переменую wizardElement и в нее циклом копируем шаблоны
+  }
+  wizardElement.querySelector('.setup-similar-label').textContent = arrWizardsElement.name;
   // подставляем случайные имена взятые из getRandomName
-  wizardElement.querySelector('.wizard-coat').style.fill = wizards[i].coatColor;
+  wizardElement.querySelector('.wizard-coat').style.fill = arrWizardsElement.coatColor;
   // красим плащи
-  wizardElement.querySelector('.wizard-eyes').style.fill = wizards[i].ceyesColor;
+  wizardElement.querySelector('.wizard-eyes').style.fill = arrWizardsElement.eyesColor;
   return wizardElement;
   // возвращем WizardElement где в шаблоне от similarWizardTemplate вставлены данные из массива -> имена*цыет плащей и т.п.
 };
 
-var fragment = document.createDocumentFragment();
-// создаем переменую fragment которая в содает в document е любой DOM элемент - но он в коробочке :_)))))
-for (var i = 0; i < wizards.length; i++) {
-  fragment.appendChild(renderWizard(wizards[i]));
-  // тут в fragment циклом накидиваем детей от функции renderWizard с параметром wizards[i]
-}
-similarListElement.appendChild(fragment);
-// в similarListElement циклом накидываем детей fragmenta ха ха,
+var getRenderWizardsAll = function (wizardArrAny) {
+  var fragment = document.createDocumentFragment();
+  // создаем переменую fragment которая в содает в document е любой DOM элемент - но он в коробочке :_)))))
+  for (var i = 0; i < wizardArrAny.length; i++) {
+    fragment.appendChild(renderWizard(wizardArrAny[i]));
+    // тут в fragment циклом накидиваем детей от функции renderWizard с параметром равным элементу массива
+  }
+  similarListElement.appendChild(fragment);
+  // в similarListElement циклом накидываем детей fragment,
+};
+
+getRenderWizardsAll(wizardArr);
