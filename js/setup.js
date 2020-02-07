@@ -1,20 +1,8 @@
 'use strict';
 var NUMBER_OF_WIZARDS = 4;
 // тут количество необходимых визардов
-var userDialog = document.querySelector('.setup');
-// ищем класс
-
-
-var userFooter = document.querySelector('.setup-similar');
-
-
-var similarListElement = document.querySelector('.setup-similar-list');
-// Находим список похожих персонажей - куда будем добавлять визардов
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-// находим template в котором храниться шаблоны визардов
 
 // массивы со случайнымми данными
-// ? как сделать аперкей в вс коде
 var NAMES = [
   'Иван',
   'Хуан Себастьян',
@@ -54,6 +42,67 @@ var EYES_COLORS = [
   'green'
 ];
 
+
+// это для обработчиков событий
+var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
+var setup = document.querySelector('.setup');
+// ищем класс
+var userFooter = document.querySelector('.setup-similar');
+var similarListElement = document.querySelector('.setup-similar-list');
+// Находим список похожих персонажей - куда будем добавлять визардов
+var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+// находим template в котором храниться шаблоны визардов
+
+var setupOpen = document.querySelector('.setup-open');
+// перменные для обработичиков
+var setupClose = setup.querySelector('.setup-close');
+var setupWizardAppearance = setup.querySelector('.setup-wizard-appearance');
+var setupWizard = setupWizardAppearance.querySelector('.setup-wizard');
+// ищем класс для своего*сохраненого визарда
+var setupWizardCoat = setupWizard.querySelector('.wizard-coat');
+// ищем класс для мантии сохраненого визарда
+var setupWizardEyes = setupWizard.querySelector('.wizard-eyes');
+// ищем класс для глаз сохраненого визарда
+
+
+// --?? Дима, почему setupClose не равно evt.target????
+// var setupUserName = setup.querySelector('.setup-user-name');
+// console.log(setupUserName);
+// console.log(evt.target)  -- вставить в функцию
+/**
+ * функция открытия попапа
+ * @param {*} evt
+ * при запуске если evt.key === ESC_KEY запускает фунцию closePopup();
+ * которрая в свою очередь добавляет класс hidden
+ * и убирает обработчик который слушает документ на нажатие клавиши ESCкейп
+ */
+var onPopupEscPress = function (evt) {
+  if (evt.target.classList.value !== 'setup-user-name') {
+    if (evt.key === ESC_KEY) {
+      closePopup();
+    }
+  }
+};
+/**
+ * функция которая убирает класс hiden
+ * и вешает на документ обработчик который слушает документ на нажатие клавиши ESC-кейп
+ */
+var openPopup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+/**
+ * фунция которая добавляет класс hidden и снимает с документа обработчик событий на нажатие клавиши ESC-кейп
+ */
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+
+// --------------------------------
 /**
  * генерация случайного числа
  * @param {number} min чистло от
@@ -84,6 +133,7 @@ var getWizards = function () {
   var wizards = [];
   for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
     // push добалвяет обьект в конец массива
+    // создаем массивы с разными визардами
     wizards.push({
       name: getRandomFromArr(NAMES) + ' ' + getRandomFromArr(SURNAMES),
       coatColor: getRandomFromArr(COAT_COLORS),
@@ -126,8 +176,8 @@ var getRenderWizardsAll = function () {
     fragment.appendChild(renderWizard(wizardArrAny[i]));
   }
   similarListElement.appendChild(fragment);
-  if (userDialog) {
-    userDialog.classList.remove('hidden');
+  if (setup) {
+    setup.classList.remove('hidden');
   }
   // удаляем класс у общего табло
   if (userFooter) {
@@ -138,3 +188,46 @@ var getRenderWizardsAll = function () {
 
 
 getRenderWizardsAll();
+
+// ///////////////// задание 4.1
+
+
+// ниже пишем обработчики событий...................
+
+// для открытия попапа при клике мышкой по setupOpen
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+// для открытия при нажатие на клавишу ентер если фокус стоит на setupOpen
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    openPopup();
+  }
+});
+
+// для закрытия попапа при клике мышкой по setupClose
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
+
+// для закрытия попапа с клавиатуру если табом дошли до setupClose (для это в html прописываем табиндех)
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    closePopup();
+  }
+});
+
+// Изменение цвета мантии персонажа по нажатию.
+// Цвет должен сменяться произвольным образом на один из ранее заданого массива
+setupWizardCoat.addEventListener('click', function () {
+  setupWizardCoat.style.fill = getRandomFromArr(COAT_COLORS);
+  setupWizardAppearance.querySelector('input[name="coat-color"]').value = setupWizardCoat.style.fill;
+});
+
+// Изменение цвета глаз персонажа по нажатию.
+// Цвет глаз волшебника меняется произвольным образом на один из ранее заданого массива
+setupWizardEyes.addEventListener('click', function () {
+  setupWizardEyes.style.fill = getRandomFromArr(EYES_COLORS);
+  setupWizardAppearance.querySelector('input[name="eyes-color"]').value = setupWizardEyes.style.fill;
+});
