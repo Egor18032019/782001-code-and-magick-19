@@ -42,6 +42,13 @@ var EYES_COLORS = [
   'green'
 ];
 
+var FIREBALL_COLORS = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
 
 // это для обработчиков событий
 var ESC_KEY = 'Escape';
@@ -65,33 +72,39 @@ var setupWizardCoat = setupWizard.querySelector('.wizard-coat');
 // ищем класс для мантии сохраненого визарда
 var setupWizardEyes = setupWizard.querySelector('.wizard-eyes');
 // ищем класс для глаз сохраненого визарда
+var setupFireballWrap = setup.querySelector('.setup-fireball-wrap');
+// ищем класс где пишеться ник визарда
+var setupUserName = setup.querySelector('.setup-user-name');
 
-
-// --?? Дима, почему setupClose не равно evt.target????
-// var setupUserName = setup.querySelector('.setup-user-name');
-// console.log(setupUserName);
-// console.log(evt.target)  -- вставить в функцию
 /**
  * функция открытия попапа
  * @param {*} evt
- * при запуске если evt.key === ESC_KEY запускает фунцию closePopup();
+ * при запуске если смотрить где произошло событие + evt.key === ESC_KEY запускает фунцию closePopup();
  * которрая в свою очередь добавляет класс hidden
  * и убирает обработчик который слушает документ на нажатие клавиши ESCкейп
  */
 var onPopupEscPress = function (evt) {
-  if (evt.target.classList.value !== 'setup-user-name') {
-    if (evt.key === ESC_KEY) {
-      closePopup();
-    }
+  if (document.activeElement !== setupUserName && evt.key === ESC_KEY) {
+    closePopup();
   }
 };
+
+var onPopupEnterPress = function (evt) {
+  // для закрытия попапа с клавиатуру если табом дошли до setupClose (для это в html прописываем табиндех)
+  if (document.activeElement === setupClose && evt.key === ENTER_KEY) {
+    closePopup();
+  }
+};
+
 /**
  * функция которая убирает класс hiden
  * и вешает на документ обработчик который слушает документ на нажатие клавиши ESC-кейп
  */
 var openPopup = function () {
   setup.classList.remove('hidden');
+  userFooter.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
+  document.addEventListener('keydown', onPopupEnterPress);
 };
 /**
  * фунция которая добавляет класс hidden и снимает с документа обработчик событий на нажатие клавиши ESC-кейп
@@ -176,13 +189,13 @@ var getRenderWizardsAll = function () {
     fragment.appendChild(renderWizard(wizardArrAny[i]));
   }
   similarListElement.appendChild(fragment);
-  if (setup) {
-    setup.classList.remove('hidden');
-  }
-  // удаляем класс у общего табло
-  if (userFooter) {
-    userFooter.classList.remove('hidden');
-  }
+  // if (setup) {
+  //   setup.classList.remove('hidden');
+  // }
+  // // удаляем класс у общего табло
+  // if (userFooter) {
+  //   userFooter.classList.remove('hidden');
+  // }
   // удаляем класс у списка - "Похожие персонажи"
 };
 
@@ -211,23 +224,26 @@ setupClose.addEventListener('click', function () {
   closePopup();
 });
 
-// для закрытия попапа с клавиатуру если табом дошли до setupClose (для это в html прописываем табиндех)
-setupClose.addEventListener('keydown', function (evt) {
-  if (evt.key === ENTER_KEY) {
-    closePopup();
-  }
-});
 
 // Изменение цвета мантии персонажа по нажатию.
 // Цвет должен сменяться произвольным образом на один из ранее заданого массива
 setupWizardCoat.addEventListener('click', function () {
-  setupWizardCoat.style.fill = getRandomFromArr(COAT_COLORS);
-  setupWizardAppearance.querySelector('input[name="coat-color"]').value = setupWizardCoat.style.fill;
+  var randomCoatColor = getRandomFromArr(COAT_COLORS);
+  setupWizardCoat.style.fill = randomCoatColor;
+  setupWizardAppearance.querySelector('input[name="coat-color"]').value = randomCoatColor;
 });
 
 // Изменение цвета глаз персонажа по нажатию.
 // Цвет глаз волшебника меняется произвольным образом на один из ранее заданого массива
 setupWizardEyes.addEventListener('click', function () {
-  setupWizardEyes.style.fill = getRandomFromArr(EYES_COLORS);
-  setupWizardAppearance.querySelector('input[name="eyes-color"]').value = setupWizardEyes.style.fill;
+  var randomEyesColor = getRandomFromArr(EYES_COLORS);
+  setupWizardEyes.style.fill = randomEyesColor;
+  setupWizardAppearance.querySelector('input[name="eyes-color"]').value = randomEyesColor;
+});
+
+// Изменение цвета фаерболов по нажатию.
+setupFireballWrap.addEventListener('click', function () {
+  var randomFireballColor = getRandomFromArr(FIREBALL_COLORS);
+  setupFireballWrap.style.backgroundColor = randomFireballColor;
+  setupFireballWrap.querySelector('input[name="fireball-color"]').value = randomFireballColor;
 });
