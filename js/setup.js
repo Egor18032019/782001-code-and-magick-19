@@ -1,4 +1,5 @@
 'use strict';
+
 var NUMBER_OF_WIZARDS = 4;
 // тут количество необходимых визардов
 
@@ -54,14 +55,28 @@ var FIREBALL_COLORS = [
 var ESC_KEY = 'Escape';
 var ENTER_KEY = 'Enter';
 
+/**
+ * переменная содержащая класс .setup
+ */
 var setup = document.querySelector('.setup');
-// ищем класс
+/**
+ * переменная содержащая класс .setup-similar
+ */
 var userFooter = document.querySelector('.setup-similar');
+/**
+ * переменная содержашая класс .setup-similar-list
+ * Список похожих персонажей - куда будем добавлять визардов
+ */
 var similarListElement = document.querySelector('.setup-similar-list');
-// Находим список похожих персонажей - куда будем добавлять визардов
+/**
+ * переменная содержашая id #similar-wizard-template
+ * находим template в котором храниться шаблоны визардов
+ */
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-// находим template в котором храниться шаблоны визардов
 
+/**
+ * переменная содержашая класс .setup-open
+ */
 var setupOpen = document.querySelector('.setup-open');
 // перменные для обработичиков
 var setupClose = setup.querySelector('.setup-close');
