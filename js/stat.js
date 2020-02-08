@@ -69,7 +69,7 @@ var getRandomColorSaturation = function (hue, lightness) {
   var saturation = getRandomInt(100);
   // получаем случайную насыщеность
   var randomSaturation = 'hsl(' + hue + ', ' + saturation + '%, ' + lightness + '%)';
-  // пишемчему будет равет hsl
+  // пишем чему будет равет hsl
   return randomSaturation;
 };
 // делаю рандомную насыщеность цвета
