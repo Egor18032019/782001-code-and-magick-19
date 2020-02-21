@@ -26,7 +26,8 @@
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
-
+    xhr.timeout = 111;
+    // --? Дима как поставить ограничения по времени на отправку??
     xhr.open('POST', URLPOST);
     xhr.send(data);
   };
@@ -54,6 +55,5 @@
     xhr.open('GET', URLGET);
     xhr.send();
   };
-
 
 })();
