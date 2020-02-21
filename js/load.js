@@ -8,7 +8,7 @@
   var StatusCode = {
     OK: 200
   };
-  var TIMEOUT_IN_MS = 1000;
+  var TIMEOUT_IN_MS = 10000;
 
   window.save = function (data, onLoad, onError) {
     /**

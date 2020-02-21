@@ -29,6 +29,15 @@
   var setupOpen = document.querySelector('.setup-open');
   // перменные для обработичиков
   var setupClose = setup.querySelector('.setup-close');
+  /**
+   * элемент .setup-wizard-form
+   */
+  var form = setup.querySelector('.setup-wizard-form');
+  /**
+   * переменная содержашая класс .setup-similar-list
+   * Список похожих персонажей - куда будем добавлять визардов
+   */
+  var similarListElement = document.querySelector('.setup-similar-list');
 
   /**
    * функция открытия попапа
@@ -68,10 +77,14 @@
     // координаты начального положения окна
     setup.style.top = '80px';
     setup.style.left = '50%';
-    // находим предупреждение и удаляем его
     document.removeEventListener('keydown', onPopupEscPress);
+    // удаляем обработчик чтобы визарды немножились
+    setupOpen.removeEventListener('click', onLoadForm);
+    // находим предупреждение и удаляем его
     var node = document.querySelector('.alert');
-    node.remove();
+    if (node) {
+      node.remove();
+    }
   };
 
   // для открытия попапа при клике мышкой по setupOpen
@@ -91,6 +104,10 @@
     closePopup();
   });
 
+  /**
+   * функция для отрисовки ошибок
+   * @param {text} errorMessage
+   */
   var onError = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: tomato;';
@@ -103,13 +120,10 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
-    /**
-   * переменная содержашая класс .setup-similar-list
-   * Список похожих персонажей - куда будем добавлять визардов
+  /**
+   * функция для отрисовки волшебников
+   * @param {array} wizards
    */
-  var similarListElement = document.querySelector('.setup-similar-list');
-
-
   var onLoad = function (wizards) {
     var fragment = document.createDocumentFragment();
 
@@ -121,20 +135,20 @@
     setup.querySelector('.setup-similar').classList.remove('hidden');
   };
 
-  /**
-   * переменная содержашая класс .setup-open
-   */
-  setupOpen.addEventListener('click', function () {
-    window.load(onLoad, onError);
-  });
-  var form = setup.querySelector('.setup-wizard-form');
+  var addHiddenSetup = function () {
+    setup.classList.add('hidden');
+  };
 
-
-  form.addEventListener('submit', function (evt) {
-    window.save(new FormData(form), function (response) {
-      setup.classList.add('hidden');
-    });
+  var onSetupFormSubmit = function (evt) {
+    var data = new FormData(form);
+    window.save(data, addHiddenSetup, onError);
     evt.preventDefault();
-  }, onError);
+  };
 
+  var onLoadForm = window.load(onLoad, onError);
+
+  // обработчик который при клике и открытие попапа подгружет данные и проверяет на ошибки
+  setupOpen.addEventListener('click', onLoadForm);
+  // обработчик который при клике отправляет форму и проверяет ушла она или нет
+  form.addEventListener('submit', onSetupFormSubmit);
 })();
