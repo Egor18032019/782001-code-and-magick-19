@@ -1,5 +1,8 @@
 'use strict';
 (function () {
+
+  var MAX_SIMILAR_WIZARD_COUNT = 4;
+
   /**
    * кнопка 'Escape'
    */
@@ -65,7 +68,10 @@
     // координаты начального положения окна
     setup.style.top = '80px';
     setup.style.left = '50%';
+    // находим предупреждение и удаляем его
     document.removeEventListener('keydown', onPopupEscPress);
+    var node = document.querySelector('.alert');
+    node.remove();
   };
 
   // для открытия попапа при клике мышкой по setupOpen
@@ -84,4 +90,51 @@
   setupClose.addEventListener('click', function () {
     closePopup();
   });
+
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: tomato;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.className = 'alert';
+    // добавил класса alert что бы в closePopup найти  у далить его при закрытие
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+    /**
+   * переменная содержашая класс .setup-similar-list
+   * Список похожих персонажей - куда будем добавлять визардов
+   */
+  var similarListElement = document.querySelector('.setup-similar-list');
+
+
+  var onLoad = function (wizards) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < MAX_SIMILAR_WIZARD_COUNT; i++) {
+      fragment.appendChild(window.setup.renderWizard(wizards[i]));
+    }
+    similarListElement.appendChild(fragment);
+
+    setup.querySelector('.setup-similar').classList.remove('hidden');
+  };
+
+  /**
+   * переменная содержашая класс .setup-open
+   */
+  setupOpen.addEventListener('click', function () {
+    window.load(onLoad, onError);
+  });
+  var form = setup.querySelector('.setup-wizard-form');
+
+
+  form.addEventListener('submit', function (evt) {
+    window.save(new FormData(form), function (response) {
+      setup.classList.add('hidden');
+    });
+    evt.preventDefault();
+  }, onError);
+
 })();

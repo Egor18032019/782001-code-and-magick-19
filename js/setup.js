@@ -3,34 +3,33 @@
   /**
    * количество необходимых визардов
    */
-  var NUMBER_OF_WIZARDS = 4;
-
+  // var NUMBER_OF_WIZARDS = 4;
   /**
    * Массив с именами
    */
-  var NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
+  // var NAMES = [
+  //   'Иван',
+  //   'Хуан Себастьян',
+  //   'Мария',
+  //   'Кристоф',
+  //   'Виктор',
+  //   'Юлия',
+  //   'Люпита',
+  //   'Вашингтон'
+  // ];
   /**
    * Массив с фамилиями
    */
-  var SURNAMES = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
+  // var SURNAMES = [
+  //   'да Марья',
+  //   'Верон',
+  //   'Мирабелла',
+  //   'Вальц',
+  //   'Онопко',
+  //   'Топольницкая',
+  //   'Нионго',
+  //   'Ирвинг'
+  // ];
   /**
    * Массив с цветами для мантий
    */
@@ -66,11 +65,7 @@
    * переменная содержащая класс .setup
    */
   var setup = document.querySelector('.setup');
-  /**
-   * переменная содержашая класс .setup-similar-list
-   * Список похожих персонажей - куда будем добавлять визардов
-   */
-  var similarListElement = document.querySelector('.setup-similar-list');
+
   /**
    * переменная содержашая id #similar-wizard-template
    * находим template в котором храниться шаблоны визардов
@@ -114,19 +109,19 @@
    * @param {net} параметров у функции нет , так как используються только константы
    * @return {arr} массив с обьектами
    */
-  var getWizards = function () {
-    var wizards = [];
-    for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
-      // push добалвяет обьект в конец массива
-      // создаем массивы с разными визардами
-      wizards.push({
-        name: getRandomFromArr(NAMES) + ' ' + getRandomFromArr(SURNAMES),
-        coatColor: getRandomFromArr(COAT_COLORS),
-        eyesColor: getRandomFromArr(EYES_COLORS)
-      });
-    }
-    return wizards;
-  };
+  // var getWizards = function () {
+  //   var wizards = [];
+  //   for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
+  //     // push добалвяет обьект в конец массива
+  //     // создаем массивы с разными визардами
+  //     wizards.push({
+  //       name: getRandomFromArr(NAMES) + ' ' + getRandomFromArr(SURNAMES),
+  //       coatColor: getRandomFromArr(COAT_COLORS),
+  //       eyesColor: getRandomFromArr(EYES_COLORS)
+  //     });
+  //   }
+  //   return wizards;
+  // };
 
   /**
    * примнимает массив и отрисовывает его элементы согласно клонировануму шаблону
@@ -140,11 +135,12 @@
     }
     wizardElement.querySelector('.setup-similar-label').textContent = arrWizardsElement.name;
     // подставляем случайные имена взятые из getRandomName
-    wizardElement.querySelector('.wizard-coat').style.fill = arrWizardsElement.coatColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = arrWizardsElement.colorCoat;
     // красим плащи
-    wizardElement.querySelector('.wizard-eyes').style.fill = arrWizardsElement.eyesColor;
+    wizardElement.querySelector('.wizard-eyes').style.fill = arrWizardsElement.colorEyes;
     return wizardElement;
   };
+
   /**
    * @description создаем переменую fragment которая в создает в documentе DOM элемент
    *   потом в него циклом накидываем детей от функции renderWizard с параметром равным элементу массива
@@ -154,16 +150,14 @@
    * @param {net}   так как используються только константы
    * @description return отрисовываем в DOM заданые элементы массива по  заданному шаблону
    */
-  var getRenderWizardsAll = function () {
-    var fragment = document.createDocumentFragment();
-    var wizardArrAny = getWizards();
-    for (var i = 0; i < wizardArrAny.length; i++) {
-      fragment.appendChild(renderWizard(wizardArrAny[i]));
-    }
-    similarListElement.appendChild(fragment);
-  };
-
-  getRenderWizardsAll();
+  // var getRenderWizardsAll = function () {
+  //   var fragment = document.createDocumentFragment();
+  //   var wizardArrAny = getWizards();
+  //   for (var i = 0; i < wizardArrAny.length; i++) {
+  //     fragment.appendChild(renderWizard(wizardArrAny[i]));
+  //   }
+  //   similarListElement.appendChild(fragment);
+  // };
 
   // ниже пишем обработчики событий...................
 
@@ -189,4 +183,9 @@
     setupFireballWrap.style.backgroundColor = randomFireballColor;
     setupFireballWrap.querySelector('input[name="fireball-color"]').value = randomFireballColor;
   });
+
+  window.setup = {
+    renderWizard: renderWizard
+  };
+
 })();
