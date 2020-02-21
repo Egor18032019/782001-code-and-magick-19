@@ -137,12 +137,20 @@
 
   var addHiddenSetup = function () {
     setup.classList.add('hidden');
+    var submitButton = setup.querySelector('.setup-submit');
+
+    submitButton.textContent = 'Сохранить';
+    submitButton.disabled = false;
   };
 
   var onSetupFormSubmit = function (evt) {
     var data = new FormData(form);
+    var submitButton = setup.querySelector('.setup-submit');
+    submitButton.textContent = 'Попытка отправки...';
+    submitButton.disabled = true;
     window.save(data, addHiddenSetup, onError);
     evt.preventDefault();
+
   };
 
   var onLoadForm = window.load(onLoad, onError);
