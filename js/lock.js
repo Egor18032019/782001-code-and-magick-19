@@ -40,6 +40,11 @@
   var similarListElement = document.querySelector('.setup-similar-list');
 
   /**
+   * кнопка Сохраниить
+   */
+  var submitButton = setup.querySelector('.setup-submit');
+
+  /**
    * функция открытия попапа
    * @param {*} evt
    * при запуске если смотрить где произошло событие + evt.key === ESC_KEY запускает фунцию closePopup();
@@ -103,7 +108,6 @@
   setupClose.addEventListener('click', function () {
     closePopup();
   });
-
   /**
    * функция для отрисовки ошибок
    * @param {text} errorMessage
@@ -119,6 +123,8 @@
     // добавил класса alert что бы в closePopup найти  у далить его при закрытие
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
+    submitButton.disabled = false;
+    submitButton.textContent = 'Сохранить';
   };
   /**
    * функция для отрисовки волшебников
@@ -135,25 +141,22 @@
     setup.querySelector('.setup-similar').classList.remove('hidden');
   };
 
-  var addHiddenSetup = function () {
-    setup.classList.add('hidden');
-    var submitButton = setup.querySelector('.setup-submit');
 
+  var addHiddenSetup = function () {
     submitButton.textContent = 'Сохранить';
     submitButton.disabled = false;
+    setup.classList.add('hidden');
   };
 
   var onSetupFormSubmit = function (evt) {
     var data = new FormData(form);
-    var submitButton = setup.querySelector('.setup-submit');
     submitButton.textContent = 'Попытка отправки...';
     submitButton.disabled = true;
-    window.save(data, addHiddenSetup, onError);
     evt.preventDefault();
-
+    window.backend.save(data, addHiddenSetup, onError);
   };
-
-  var onLoadForm = window.load(onLoad, onError);
+  // --? Дима посмотри пожалуйста правильно ли тут
+  var onLoadForm = window.backend.load(onLoad, onError);
 
   // обработчик который при клике и открытие попапа подгружет данные и проверяет на ошибки
   setupOpen.addEventListener('click', onLoadForm);

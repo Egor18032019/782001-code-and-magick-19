@@ -1,38 +1,6 @@
 'use strict';
 (function () {
-  /**
-   * количество необходимых визардов
-   */
-  // var NUMBER_OF_WIZARDS = 4;
-  /**
-   * Массив с именами
-   */
-  // var NAMES = [
-  //   'Иван',
-  //   'Хуан Себастьян',
-  //   'Мария',
-  //   'Кристоф',
-  //   'Виктор',
-  //   'Юлия',
-  //   'Люпита',
-  //   'Вашингтон'
-  // ];
-  /**
-   * Массив с фамилиями
-   */
-  // var SURNAMES = [
-  //   'да Марья',
-  //   'Верон',
-  //   'Мирабелла',
-  //   'Вальц',
-  //   'Онопко',
-  //   'Топольницкая',
-  //   'Нионго',
-  //   'Ирвинг'
-  // ];
-  /**
-   * Массив с цветами для мантий
-   */
+
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -82,7 +50,6 @@
   // ищем класс для глаз сохраненого визарда
   var setupFireballWrap = setup.querySelector('.setup-fireball-wrap');
 
-  // --------------------------------
   /**
    * генерация случайного числа
    * @param {number} min чистло от
@@ -104,25 +71,6 @@
   };
 
   /**
-   * цикл для создание массива с обьектами
-   * @param {net} параметров у функции нет , так как используються только константы
-   * @return {arr} массив с обьектами
-   */
-  // var getWizards = function () {
-  //   var wizards = [];
-  //   for (var i = 0; i < NUMBER_OF_WIZARDS; i++) {
-  //     // push добалвяет обьект в конец массива
-  //     // создаем массивы с разными визардами
-  //     wizards.push({
-  //       name: getRandomFromArr(NAMES) + ' ' + getRandomFromArr(SURNAMES),
-  //       coatColor: getRandomFromArr(COAT_COLORS),
-  //       eyesColor: getRandomFromArr(EYES_COLORS)
-  //     });
-  //   }
-  //   return wizards;
-  // };
-
-  /**
    * примнимает массив и отрисовывает его элементы согласно клонировануму шаблону
    * @param {arr} arrWizardsElement массив с данными визардов
    * @return {template+arr}   возвращем WizardElement где в шаблоне от similarWizardTemplate вставлены данные из массива -> имена*цыет плащей и т.п.
@@ -140,28 +88,6 @@
     return wizardElement;
   };
 
-  /**
-   * @description создаем переменую fragment которая в создает в documentе DOM элемент
-   *   потом в него циклом накидываем детей от функции renderWizard с параметром равным элементу массива
-   *   а потом уже  в similarListElement циклом присоеднияем детей от fragment
-   * + показываем общее табло
-   * + показываем список "Похожие персонажи"
-   * @param {net}   так как используються только константы
-   * @description return отрисовываем в DOM заданые элементы массива по  заданному шаблону
-   */
-  // var getRenderWizardsAll = function () {
-  //   var fragment = document.createDocumentFragment();
-  //   var wizardArrAny = getWizards();
-  //   for (var i = 0; i < wizardArrAny.length; i++) {
-  //     fragment.appendChild(renderWizard(wizardArrAny[i]));
-  //   }
-  //   similarListElement.appendChild(fragment);
-  // };
-
-  // ниже пишем обработчики событий...................
-
-  // Изменение цвета мантии персонажа по нажатию.
-  // Цвет должен сменяться произвольным образом на один из ранее заданого массива
   setupWizardCoat.addEventListener('click', function () {
     var randomCoatColor = getRandomFromArr(COAT_COLORS);
     setupWizardCoat.style.fill = randomCoatColor;
