@@ -1,5 +1,8 @@
 'use strict';
 (function () {
+
+  var MAX_SIMILAR_WIZARD_COUNT = 4;
+
   /**
    * кнопка 'Escape'
    */
@@ -26,6 +29,20 @@
   var setupOpen = document.querySelector('.setup-open');
   // перменные для обработичиков
   var setupClose = setup.querySelector('.setup-close');
+  /**
+   * элемент .setup-wizard-form
+   */
+  var form = setup.querySelector('.setup-wizard-form');
+  /**
+   * переменная содержашая класс .setup-similar-list
+   * Список похожих персонажей - куда будем добавлять визардов
+   */
+  var similarListElement = document.querySelector('.setup-similar-list');
+
+  /**
+   * кнопка Сохраниить
+   */
+  var submitButton = setup.querySelector('.setup-submit');
 
   /**
    * функция открытия попапа
@@ -66,6 +83,13 @@
     setup.style.top = '80px';
     setup.style.left = '50%';
     document.removeEventListener('keydown', onPopupEscPress);
+    // удаляем обработчик чтобы визарды немножились
+    setupOpen.removeEventListener('click', onLoadForm);
+    // находим предупреждение и удаляем его
+    var node = document.querySelector('.alert');
+    if (node) {
+      node.remove();
+    }
   };
 
   // для открытия попапа при клике мышкой по setupOpen
@@ -84,4 +108,58 @@
   setupClose.addEventListener('click', function () {
     closePopup();
   });
+  /**
+   * функция для отрисовки ошибок
+   * @param {text} errorMessage
+   */
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: tomato;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.className = 'alert';
+    // добавил класса alert что бы в closePopup найти  у далить его при закрытие
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+    submitButton.disabled = false;
+    submitButton.textContent = 'Сохранить';
+  };
+  /**
+   * функция для отрисовки волшебников
+   * @param {array} wizards
+   */
+  var onLoad = function (wizards) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < MAX_SIMILAR_WIZARD_COUNT; i++) {
+      fragment.appendChild(window.setup.renderWizard(wizards[i]));
+    }
+    similarListElement.appendChild(fragment);
+
+    setup.querySelector('.setup-similar').classList.remove('hidden');
+  };
+
+
+  var addHiddenSetup = function () {
+    submitButton.textContent = 'Сохранить';
+    submitButton.disabled = false;
+    setup.classList.add('hidden');
+  };
+
+  var onSetupFormSubmit = function (evt) {
+    var data = new FormData(form);
+    submitButton.textContent = 'Попытка отправки...';
+    submitButton.disabled = true;
+    evt.preventDefault();
+    window.backend.save(data, addHiddenSetup, onError);
+  };
+  // --? Дима посмотри пожалуйста правильно ли тут
+  var onLoadForm = window.backend.load(onLoad, onError);
+
+  // обработчик который при клике и открытие попапа подгружет данные и проверяет на ошибки
+  setupOpen.addEventListener('click', onLoadForm);
+  // обработчик который при клике отправляет форму и проверяет ушла она или нет
+  form.addEventListener('submit', onSetupFormSubmit);
 })();
