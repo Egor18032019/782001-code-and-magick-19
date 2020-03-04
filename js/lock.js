@@ -108,6 +108,7 @@
   setupClose.addEventListener('click', function () {
     closePopup();
   });
+
   /**
    * функция для отрисовки ошибок
    * @param {text} errorMessage
@@ -126,19 +127,97 @@
     submitButton.disabled = false;
     submitButton.textContent = 'Сохранить';
   };
-  /**
-   * функция для отрисовки волшебников
-   * @param {array} wizards
-   */
-  var onLoad = function (wizards) {
-    var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < MAX_SIMILAR_WIZARD_COUNT; i++) {
+  // обьявляем пустые переменные
+  var coatColor;
+  var eyesColor;
+  var wizards = [];
+
+  /**
+   * система ранжирования элементов в массиве
+   * @param {*} wizard элемент массив
+   * @return  {number} ранг элемента массива
+   */
+  var getRank = function (wizard) {
+    var rank = 0;
+
+    if (wizard.colorCoat === coatColor && wizard.colorEyes === eyesColor) {
+      rank += 3;
+    }
+    if (wizard.colorCoat === coatColor) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === eyesColor) {
+      rank += 1;
+    }
+    return rank;
+  };
+  /**
+   * функция сортировки элементов массива
+   * @param {*} left критерий сортировки
+   * @param {*} right критерий сортировки
+   * @return  {number} индекс отсортированого элементе
+   */
+  var namesComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+
+  /**
+   * отрисовка элементов массива
+   * @param {*} data  массив
+   */
+  var render = function (data) {
+    var fragment = document.createDocumentFragment();
+    var takeNumber = data.length > MAX_SIMILAR_WIZARD_COUNT ? MAX_SIMILAR_WIZARD_COUNT : data.length;
+    // чистим элемент
+    similarListElement.innerHTML = '';
+    for (var i = 0; i < takeNumber; i++) {
       fragment.appendChild(window.setup.renderWizard(wizards[i]));
     }
     similarListElement.appendChild(fragment);
+    userFooter.classList.remove('hidden');
+  };
 
-    setup.querySelector('.setup-similar').classList.remove('hidden');
+
+  var updateWizards = function () {
+    // сортируем массив wizards
+    wizards.sort(function (left, right) {
+      var rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        // -???  Дима не могу понять эту строчку.. Откуда он тут узнает длину имени ???
+        rankDiff = namesComparator(left.name, right.name);
+      }
+      return rankDiff;
+    });
+    render(wizards);
+  };
+
+  // Перезаписываем обработчики-пустышки обьявленные выше
+
+  window.setup.wizard.onEyesChange = window.debounce(function (colors) {
+    eyesColor = colors;
+    updateWizards();
+  });
+
+  // И обработчик на смену цвета мантии
+  window.setup.wizard.onCoatChange = window.debounce(function (color) {
+    coatColor = color;
+    updateWizards();
+  });
+
+  /**
+   * функция для отрисовки волшебников
+   * @param {array} data
+   */
+  var onLoad = function (data) {
+    wizards = data;
+    updateWizards();
   };
 
 
