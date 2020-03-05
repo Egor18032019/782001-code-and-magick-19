@@ -69,7 +69,10 @@
     var random = getRandomInt(0, arr.length - 1);
     return arr[random];
   };
-
+  var wizard = {
+    onEyesChange: function () {},
+    onCoatChange: function () {}
+  };
   /**
    * примнимает массив и отрисовывает его элементы согласно клонировануму шаблону
    * @param {arr} arrWizardsElement массив с данными визардов
@@ -92,7 +95,9 @@
     var randomCoatColor = getRandomFromArr(COAT_COLORS);
     setupWizardCoat.style.fill = randomCoatColor;
     setupWizardAppearance.querySelector('input[name="coat-color"]').value = randomCoatColor;
+    wizard.onCoatChange(randomCoatColor);
   });
+
 
   // Изменение цвета глаз персонажа по нажатию.
   // Цвет глаз волшебника меняется произвольным образом на один из ранее заданого массива
@@ -100,6 +105,7 @@
     var randomEyesColor = getRandomFromArr(EYES_COLORS);
     setupWizardEyes.style.fill = randomEyesColor;
     setupWizardAppearance.querySelector('input[name="eyes-color"]').value = randomEyesColor;
+    wizard.onEyesChange(randomEyesColor);
   });
 
   // Изменение цвета фаерболов по нажатию.
@@ -110,7 +116,8 @@
   });
 
   window.setup = {
-    renderWizard: renderWizard
+    renderWizard: renderWizard,
+    wizard: wizard
   };
 
 })();
