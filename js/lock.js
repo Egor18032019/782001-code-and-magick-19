@@ -1,4 +1,5 @@
 'use strict';
+// открытие закрытие окна настройки персонажей
 (function () {
 
   var MAX_SIMILAR_WIZARD_COUNT = 4;
