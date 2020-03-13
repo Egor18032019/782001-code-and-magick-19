@@ -1,7 +1,7 @@
 'use strict';
 // устранение мигания
 (function () {
-  var DEBOUNCE_INTERVAL = 1000; // ms
+  var DEBOUNCE_INTERVAL = 500; // ms
 
   window.debounce = function (cb) {
     var lastTimeout = null;
@@ -12,8 +12,7 @@
         window.clearTimeout(lastTimeout);
       }
       lastTimeout = window.setTimeout(function () {
-        // -? Дима как работает метод apply ? не понял
-        // что значит null ?
+
         cb.apply(null, parameters);
       }, DEBOUNCE_INTERVAL);
     };
